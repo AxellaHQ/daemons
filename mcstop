@@ -1,0 +1,27 @@
+#!/bin/bash
+
+USERNAME='minecraft'
+SERVICE='server.jar'
+SCNAME='minecraft'
+MC_PATH='/srv/minecraft/server'
+
+cd $MC_PATH
+
+ME=`whoami`
+
+if [ $ME == $USERNAME ] ; then
+	if pgrep -u $USERNAME -f $SERVICE > /dev/null
+	then
+		echo "$SERVICE を終了します"
+		screen -p 0 -S $SCNAME -X eval 'stuff "サーバーは10秒後に再起動されます。ワールドを保存しています..."\015'
+		screen -p 0 -S $SCNAME -X eval 'stuff "save-all"\015'
+		sleep 10
+		screen -p 0 -S $SCNAME -X eval 'stuff "stop"\015'
+		sleep 10
+		echo "サーバーを終了しました。"
+	else
+		echo "$SERVICE は動作していません。"
+	fi
+else
+	echo "$USERNAME ユーザーでログインしてください。"
+fi

@@ -1,0 +1,8 @@
+#!/bin/bash 
+user=`whoami`
+
+if [ $user = "minecraft" ]; then
+screen -r minecraft
+else
+sudo su - minecraft -c "script /dev/null -q -c \"screen -rx minecraft\""
+fi
